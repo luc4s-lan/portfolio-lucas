@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lucas Lancelot - Génie Industriel et Maintenance</title>
+    <script>document.documentElement.classList.add('js');</script>
+    <style>
+        :root {
+            --bg-dark: #0B0B0E;
+            --bg-card: #14141A;
+            --bronze: #6B4F3B;
+            --bronze-light: #8E6A52;
+            --silver: #C0C0C0;
+            --lavender: #D8B4FE;
+            --text-main: #F3F3F6;
+            --text-muted: #9CA3AF;
+            --border-color: rgba(216, 180, 254, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* Barre de progression de lecture */
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            width: 0;
+            background: linear-gradient(90deg, var(--bronze), var(--lavender));
+            box-shadow: 0 0 10px rgba(216, 180, 254, 0.5);
+            z-index: 1002;
+            transition: width 0.1s linear;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(11, 11, 14, 0.9);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.2rem 5%;
+            z-index: 1000;
+        }
+
+        .nav-logo {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--lavender);
+            letter-spacing: 1px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.8rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            position: relative;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--lavender);
+        }
+
+        .nav-links a.active {
+            color: var(--lavender);
+        }
+
+        .nav-links a.active::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -6px;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--bronze), var(--lavender));
+            border-radius: 2px;
+        }
+
+        /* Hero Section */
+        header.hero {
+            min-height: auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 7rem 1rem 5rem;
+            background: radial-gradient(circle at 50% 30%, rgba(107, 79, 59, 0.2) 0%, rgba(216, 180, 254, 0.05) 40%, transparent 70%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Halo flottant derrière l'entête */
+        header.hero::before {
+            content: '';
+            position: absolute;
+            top: -120px;
+            left: 50%;
+            width: 700px;
+            height: 700px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(216, 180, 254, 0.12), transparent 70%);
+            transform: translateX(-50%);
+            animation: float 9s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        header.hero > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(30px); }
+        }
+
+        /* Bannière d'entête, juste au-dessus du nom */
+        .banner {
+            position: relative;
+            width: 100%;
+            max-width: 1000px;
+            height: 300px;
+            margin-bottom: 2.5rem;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            background: var(--bg-card);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .banner img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.8s ease;
+        }
+
+        .banner:hover img {
+            transform: scale(1.03);
+        }
+
+        .banner::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(11, 11, 14, 0.5), transparent 40%);
+            pointer-events: none;
+        }
+
+        header.hero h1 {
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(90deg, #F3F3F6, #D8B4FE, #8E6A52, #F3F3F6);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: shimmer 6s linear infinite;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
+        }
+
+        header.hero p {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            color: var(--text-muted);
+            max-width: 650px;
+            margin-bottom: 2rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            background: linear-gradient(135deg, var(--bronze), var(--bronze-light));
+            color: #fff;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(216, 180, 254, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(107, 79, 59, 0.4);
+            border-color: var(--lavender);
+        }
+
+        /* Sections avec séparateurs visuels Bronze & Violet */
+        section {
+            position: relative;
+            padding: 6rem 8% 5rem 8%;
+        }
+
+        section::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 20%;
+            right: 20%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--bronze), var(--lavender), transparent);
+        }
+
+        section h2 {
+            font-size: 2.2rem;
+            margin-bottom: 3rem;
+            text-align: center;
+            color: var(--text-main);
+            font-weight: 700;
+        }
+
+        section h2 span {
+            color: var(--lavender);
+            text-shadow: 0 0 20px rgba(216, 180, 254, 0.3);
+        }
+
+        /* Bouton Flèche de Navigation Bas-Droite */
+        .next-section-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: rgba(20, 20, 26, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--lavender);
+            cursor: pointer;
+            z-index: 1001;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .next-section-btn:hover {
+            background: var(--bronze);
+            color: #fff;
+            border-color: var(--lavender);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(107, 79, 59, 0.6);
+        }
+
+        .next-section-btn svg {
+            width: 22px;
+            height: 22px;
+            stroke: currentColor;
+            transition: transform 0.3s ease;
+        }
+
+        .next-section-btn:hover svg {
+            transform: translateY(2px);
+        }
+
+        /* Conteneur d'image standardisé (format A4 paysage) */
+        .img-container {
+            width: 100%;
+            aspect-ratio: 297 / 210;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-top: 1rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+            transition: transform 0.4s ease;
+        }
+
+        .img-container:hover img {
+            transform: scale(1.03);
+        }
+
+        /* Cartes & Grilles */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--bronze), var(--lavender));
+        }
+
+        .card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            color: var(--lavender);
+        }
+
+        .card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 0.8rem;
+        }
+
+        /* Effet de survol sur les blocs */
+        .card,
+        .exp-card,
+        .competence-block {
+            transition: opacity 0.8s ease, translate 0.8s ease, transform 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
+        }
+
+        .card:hover,
+        .exp-card:hover,
+        .competence-block:hover {
+            transform: translateY(-4px);
+            border-color: rgba(216, 180, 254, 0.35);
+            box-shadow: 0 18px 40px rgba(107, 79, 59, 0.25);
+        }
+
+        /* Apparition au défilement */
+        .js .reveal {
+            opacity: 0;
+            translate: 0 40px;
+        }
+
+        .js .reveal.visible {
+            opacity: 1;
+            translate: 0 0;
+        }
+
+        /* Liens email */
+        a.mail-link {
+            color: var(--lavender);
+            text-decoration: none;
+            border-bottom: 1px dashed rgba(216, 180, 254, 0.4);
+            transition: color 0.3s ease, border-color 0.3s ease;
+        }
+
+        a.mail-link:hover {
+            color: #fff;
+            border-color: var(--lavender);
+        }
+
+        /* Profil & CV Format A4 Rigoureux */
+        .cv-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .cv-frame {
+            width: 100%;
+            aspect-ratio: 1 / 1.414;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            position: relative;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        .cv-frame:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 18px 45px rgba(107, 79, 59, 0.35);
+        }
+
+        .cv-frame::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--bronze), var(--lavender));
+            z-index: 2;
+        }
+
+        .cv-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            background: #ffffff;
+            display: block;
+        }
+
+        .cv-download {
+            display: flex;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        /* Passion */
+        .passion-grid {
+            display: grid;
+            grid-template-columns: 1.6fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .passion-photos {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+            width: 100%;
+            max-width: 260px;
+            justify-self: center;
+        }
+
+        .img-small {
+            aspect-ratio: 4 / 3;
+            margin-top: 0;
+        }
+
+        /* Compétences BUT GIM */
+        .competence-block {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2.5rem;
+            margin-bottom: 2.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .competence-block::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--bronze), var(--lavender));
+        }
+
+        .competence-block h3 {
+            font-size: 1.5rem;
+            color: var(--silver);
+            margin-bottom: 1rem;
+            padding-left: 0.5rem;
+        }
+
+        .photos-grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        /* Expériences */
+        .exp-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .exp-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--bronze), var(--lavender));
+        }
+
+        .exp-card h3 {
+            color: var(--lavender);
+            font-size: 1.3rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .exp-meta {
+            font-size: 0.85rem;
+            color: var(--bronze-light);
+            font-weight: 600;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .cv-grid, .photos-grid-2, .passion-grid { grid-template-columns: 1fr; }
+            .banner { height: 200px; }
+            .passion-photos {
+                flex-direction: row;
+                max-width: 100%;
+            }
+            .img-small { flex: 1; }
+        }
+
+        /* Respect des préférences d'animation */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation: none !important;
+                transition: none !important;
+                scroll-behavior: auto !important;
+            }
+            .js .reveal { opacity: 1; translate: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-logo">LUCAS LANCELOT</div>
+        <ul class="nav-links">
+            <li><a href="#accueil">Accueil</a></li>
+            <li><a href="#profil">Profil & CV</a></li>
+            <li><a href="#passion">Passion</a></li>
+            <li><a href="#competences">Compétences GIM</a></li>
+            <li><a href="#ingenieur">Projet Ingénieur</a></li>
+            <li><a href="#projets">Projets & Concours</a></li>
+            <li><a href="#experiences">Expériences</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- Bouton Flèche Navigation Bas-Droite -->
+    <button class="next-section-btn" onclick="scrollToNextSection()" aria-label="Section suivante">
+        <svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+        </svg>
+    </button>
+
+    <!-- Accueil Hero -->
+    <header id="accueil" class="hero">
+        <div class="banner">
+            <img src="images/entete.png" alt="Bannière Lucas Lancelot">
+        </div>
+        <h1>Lucas Lancelot</h1>
+        <p>Étudiant en 3ème année de BUT Génie Industriel & Maintenance (GIM) | Alternant en maintenance préventive côté fabrication chez Heineken</p>
+        <a href="#profil" class="btn">Découvrir ma présentation</a>
+    </header>
+
+    <!-- Section Profil & CV -->
+    <section id="profil">
+        <h2>Mon Profil & <span>Mon CV</span></h2>
+        <div class="cv-grid">
+            <div>
+                <div class="card" style="margin-bottom: 2rem;">
+                    <h3>Informations Clés</h3>
+                    <p><strong>Âge :</strong> 21 ans | Résidant à Lesquin (59810)</p>
+                    <p><strong>Contact :</strong> 07 83 04 33 02 | <a href="mailto:lancelot.luc4s@gmail.com" class="mail-link">lancelot.luc4s@gmail.com</a></p>
+                    <p><strong>Formations :</strong> BUT GIM à l'UPHF Valenciennes (3ème année) | Bac Général (Lycée Eugène Thomas, Le Quesnoy)</p>
+                </div>
+                <div class="card">
+                    <h3>Compétences & Atouts</h3>
+                    <p><strong>Logiciels :</strong> SolidWorks, TIA Portal, Mainti4 (GMAO), Roboguide, Cura, QElectroTech, See Electrical.</p>
+                    <p><strong>Habilitations :</strong> Permis B & véhiculé, Habilitation électrique BR, BAFA complet, PSC1.</p>
+                    <p><strong>Langues & Loisirs :</strong> Français (Natif), Anglais (B1). Fabrication additive, mécanique auto, photo/drone.</p>
+                </div>
+            </div>
+
+            <div>
+                <h3 style="margin-bottom: 1rem; color: var(--silver); text-align: center;">Curriculum Vitae</h3>
+                <div class="cv-frame">
+                    <img src="images/cv.png" alt="CV Lucas Lancelot">
+                </div>
+                <div class="cv-download">
+                    <a href="CV_Lucas_Lancelot.pdf" download class="btn">Télécharger mon CV (PDF)</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Passion -->
+    <section id="passion">
+        <h2>Mes <span>Passions</span></h2>
+        <div class="passion-grid">
+            <div class="card">
+                <h3>En dehors des études</h3>
+                <p>Je suis passionné par tout ce qui se construit et se fabrique de mes propres mains. La fabrication additive me permet de concevoir et d'imprimer mes propres pièces, du prototype à l'objet fini.</p>
+                <p>La mécanique automobile occupe aussi une place importante dans mon temps libre : démonter, comprendre, réparer et améliorer un véhicule demande la même rigueur que la maintenance industrielle.</p>
+                <p>Enfin, la photo et le drone me permettent de voir les choses sous un autre angle, littéralement, et de garder une trace de mes projets.</p>
+            </div>
+            <div class="passion-photos">
+                <div class="img-container img-small"><img src="images/passion-1.png" alt="Passion 1"></div>
+                <div class="img-container img-small"><img src="images/passion-2.png" alt="Passion 2"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Compétences BUT GIM -->
+    <section id="competences">
+        <h2>Les Compétences du <span>BUT GIM</span></h2>
+
+        <!-- Tableau Récapitulatif -->
+        <div class="card" style="margin-bottom: 3rem;">
+            <h3>Tableau Synthétique des 5 Compétences</h3>
+            <p>Vue d'ensemble des blocs de compétences validés tout au long du cursus (Niveaux 1, 2 et 3).</p>
+            <div class="img-container">
+                <img src="images/tableau-competences.png" alt="Tableau des compétences">
+            </div>
+        </div>
+
+        <!-- 1. Maintenir -->
+        <div class="competence-block">
+            <h3>1. MAINTENIR</h3>
+            <p><strong>Diagnostic, Fiabilisation et Gestion de Maintenance Pluritechnique :</strong>
+<p>  <p>
+Tout au long de mon parcours en BUT Génie Industriel et Maintenance, j’ai développé une solide maîtrise des méthodes et des outils indispensables pour garantir la disponibilité et la performance des équipements industriels.
+
+De la réalisation de TP pratiques (diagnostic et câblage sur armoires électriques, analyse et relève de pannes sur contacteur KM1) jusqu'à mes interventions concrètes en milieu industriel, j'applique rigoureusement la démarche de résolution de problèmes pluritechniques (mécanique, électrique, pneumatique).</p>
+<p><p>
+            <p>Fort de mon expérience en GMAO (gestion de stock, arborescence et topologie sur Mainti4) et de ma capacité à rédiger des gammes de démontage/remontage normées, je m'implique au quotidien pour optimiser la maintenance préventive et curative, sécuriser les interventions et pérenniser les outils de production.</p>
+            <div class="photos-grid-2">
+                <div class="img-container"><img src="images/maintenir-1.png" alt="Maintenir 1"></div>
+                <div class="img-container"><img src="images/maintenir-2.png" alt="Maintenir 2"></div>
+            </div>
+        </div>
+
+        <!-- 2. Installer -->
+        <div class="competence-block">
+            <h3>2. INSTALLER</h3>
+            <p><strong>Étude, Câblage et Mise en Service de Systèmes Pluritechniques :</strong> <p> <p>
+
+Tout au long de mon cursus et de mes expériences professionnelles, j’ai développé une forte expertise dans l'installation et la mise en service d'équipements automatisés, électriques, hydrauliques et pneumatiques.</p>
+            <p>Que ce soit par la réalisation de schémas électriques normés, le câblage rigoureux de moteurs triphasés, l'étude aéraulique de Centrales de Traitement d'Air (CTA) ou la conception d'armoires et de caissons de convoyage pneumatique (lors de mon stage chez NTS Convoyeur), je veille toujours à respecter les exigences de dimensionnement, les schémas d'implantation et les standards de qualité industrielle avant la mise sous tension.</p>
+            <div class="photos-grid-2">
+                <div class="img-container"><img src="images/installer-1.png" alt="Installer 1"></div>
+                <div class="img-container"><img src="images/installer-2.png" alt="Installer 2"></div>
+            </div>
+        </div>
+
+        <!-- 3. Améliorer -->
+        <div class="competence-block">
+            <h3>3. AMÉLIORER</h3>
+            <p><strong>Optimisation des Processus et Conception de Solutions Industrielles Pluritechniques :</strong> <p> <p>
+
+Améliorer la performance et la fiabilité des lignes de production est au cœur de mes ambitions d'ingénieur. J'ai mis en pratique cette compétence à travers la modélisation 3D avancée sur SolidWorks et la fabrication concrète de solutions d'optimisation (comme la création de supports ergonomiques pour le soudage TIG ou l'amélioration d'équipements lors de mes projets).</p>
+
+            <p>Cette démarche d'amélioration continue s'est également illustrée lors du projet Gim'Eole Performance, où l'analyse des gains de rendement, la planification rigoureuse sous diagramme de Gantt et la recherche permanente d'efficacité m'ont permis d'optimiser la conception d'un système de A à Z.</p>
+
+            <div class="photos-grid-2">
+                <div class="img-container"><img src="images/ameliorer-1.png" alt="Améliorer 1"></div>
+                <div class="img-container"><img src="images/ameliorer-2.png" alt="Améliorer 2"></div>
+            </div>
+        </div>
+
+        <!-- 4. Manager -->
+        <div class="competence-block">
+            <h3>4. MANAGER</h3>
+            <p><strong>Animation de Projets, Travail en Équipe et Communication Technique :</strong> <p> <p>
+
+Le métier de technicien supérieur et de futur ingénieur repose avant tout sur l'humain, la coordination et la conduite de projets. J’ai su développer un solide sens du leadership et du travail en équipe, que ce soit en coordonnant les ressources lors de projets techniques à l'IUT, en rédigeant des dossiers d'analyse thématiques ou en animant des groupes de travail.</p>
+
+            <p>Une grosse partie de la communication et de l'apprentissage de celle-ci passe par la manière de rendre compte que ce soit à l'écrit ou à l'oral. </p>
+            <div class="photos-grid-2">
+                <div class="img-container"><img src="images/manager-1.png" alt="Manager 1"></div>
+                <div class="img-container"><img src="images/manager-2.png" alt="Manager 2"></div>
+            </div>
+        </div>
+
+        <!-- 5. Sécuriser -->
+        <div class="competence-block">
+            <h3>5. SÉCURISER</h3>
+            <p><strong>Maîtrise des Risques Industriels, Consignation et Sécurité des Personnes :</strong> <p> <p>
+
+La sécurité est la priorité absolue en milieu industriel, en particulier dans un environnement de grande cadence comme la brasserie Heineken. Détenteur de l'habilitation électrique BR, du PSC1 et formé aux procédures rigoureuses de consignation (notamment sur bancs frigorifiques), j'intègre systématiquement l'analyse des risques (LOTO, AMDEC) dans chacune de mes interventions.</p>
+
+            <p>J'ai également mis cette compétence au service de la prévention en réalisant des supports et vidéos de sécurité (notamment en maintenance automobile), tout en pratiquant la programmation, l'apprentissage et les tests de sécurité sur différents types de robots et cobots (Fanuc, Kuka, Yaskawa, Universal Robots) pour garantir des zones de travail parfaitement maîtrisées.</p>
+            <div class="photos-grid-2">
+                <div class="img-container"><img src="images/securiser-1.png" alt="Sécuriser 1"></div>
+                <div class="img-container"><img src="images/securiser-2.png" alt="Sécuriser 2"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Projet Ingénieur Industrie 4.0 -->
+    <section id="ingenieur">
+        <h2>Projet Poursuite d'Études : <span>Ingénieur Industrie 4.0</span></h2>
+        <div class="card">
+            <h3>Mon Ambition pour Septembre 2027</h3>
+            <p>Dans la continuité logique de mon BUT GIM et de mon expérience en alternance chez Heineken, je souhaite intégrer une école d'ingénieur en Génie Industriel (ciblant des écoles de référence telles que l'<strong>INSA Hauts-de-France</strong> ou l'<strong>IMT Nord Europe</strong>).</p>
+            <p>Mon objectif à terme est d'évoluer vers un poste d'ingénieur méthodes / industrialisation, tout en portant une vision moderne de l'usine du futur. Je m'intéresse particulièrement aux technologies d'avenir qui redéfinissent la performance industrielle : le déploiement de la maintenance prédictive avancée, l'optimisation des flux par la robotique collaborative et l'intégration de l'IoT industriel pour sécuriser et fluidifier la production.
+
+Mon parcours de technicien alternant m'a forgé une solide culture de terrain et une vraie réactivité face aux aléas de production. Je souhaite aujourd'hui capitaliser sur ces acquis pour piloter des projets industriels complexes et innovants.</p>
+
+            <div class="photos-grid-2">
+                <div class="img-container"><img src="images/ingenieur.png" alt="Projet Ingénieur Industrie 4.0"></div>
+                <div class="img-container"><img src="images/ingenieur-2.png" alt="Projet Ingénieur Industrie 4.0 - 2"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Projets & Concours -->
+    <section id="projets">
+        <h2>Projets Phares & <span>Concours</span></h2>
+        <div class="grid-2">
+            <div class="card">
+                <h3>Vainqueur National - 1ère Place : Gim'Eole 24h</h3>
+                <p>Concours national à Strasbourg (30 équipes GIM). Fabrication d'une éolienne en 24h sous pression, gestion des ressources et cohésion d'équipe. Production moyenne de 91 W.</p>
+                <div class="photos-grid-2">
+                    <div class="img-container"><img src="images/gimeole-24h-1.png" alt="Gim'Eole 24h 1"></div>
+                    <div class="img-container"><img src="images/gimeole-24h-2.png" alt="Gim'Eole 24h 2"></div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Concours Gim'Eole Performance</h3>
+                <p>Conception et optimisation d'une éolienne de septembre à mars sur la base d'un modèle récupéré. Planification sous diagramme de Gantt, conception des plans et fabrication.</p>
+                <div class="photos-grid-2">
+                    <div class="img-container"><img src="images/gimeole-perf-1.png" alt="Gim'Eole Performance 1"></div>
+                    <div class="img-container"><img src="images/gimeole-perf-2.png" alt="Gim'Eole Performance 2"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Expériences -->
+    <section id="experiences">
+        <h2>Expériences <span>Professionnelles</span></h2>
+
+        <div class="exp-card">
+            <h3>Alternant en Maintenance Préventive Fabrication</h3>
+            <div class="exp-meta">Heineken — Mons-en-Barœul | Septembre 2026 - Juillet 2027</div>
+            <p>Maintenance préventive et curative sur les lignes de production de la brasserie. Suivi des équipements, intervention sur la fabrication, sur la mécanique, le pneumatique et l'automatisme.</p>
+            <div class="photos-grid-2">
+                <div class="img-container"><img src="images/heineken-1.png" alt="Heineken 1"></div>
+                <div class="img-container"><img src="images/heineken-2.png" alt="Heineken 2"></div>
+            </div>
+        </div>
+
+        <div class="exp-card">
+            <h3>Stagiaire en Maintenance Améliorative</h3>
+            <p style="color: var(--silver); margin-bottom: 0.5rem; font-weight: 500;">Problématique : Maintenance améliorative d'une ligne de convoyage pneumatique.</p>
+            <div class="exp-meta">NTS Convoyeur — Seclin | 2026 (10 semaines)</div>
+            <p>Conception de 2 armoires électriques et de 2 caissons mécaniques. Participation à la programmation et à l'implantation d'automates pour convoyage pneumatique PET.</p>
+            <div class="photos-grid-2">
+                <div class="img-container"><img src="images/nts-1.png" alt="NTS 1"></div>
+                <div class="img-container"><img src="images/nts-2.png" alt="NTS 2"></div>
+            </div>
+        </div>
+
+        <div class="exp-card">
+            <h3>Animateur en Centre de Loisirs</h3>
+            <div class="exp-meta">Saulzoir | Vacances scolaires (2023, 2024, 2025)</div>
+            <p>Encadrement d'enfants, gestion d'activités ludiques et éducatives, développement du sens des responsabilités et du travail d'équipe (Titulaire du BAFA complet).</p>
+        </div>
+    </section>
+
+    <!-- Section Contact -->
+    <section id="contact" style="text-align: center;">
+        <h2>Restons en <span>Contact</span></h2>
+        <p style="color: var(--text-muted); margin-bottom: 2rem;">Discutons de vos opportunités d'alternance ou de projet.</p>
+
+        <div style="display: flex; justify-content: center; gap: 3rem; flex-wrap: wrap; margin-bottom: 2.5rem; color: var(--text-main);">
+            <div>
+                <p style="color: var(--lavender); font-weight: 600; margin-bottom: 0.3rem;">Téléphone</p>
+                <a href="tel:+33783043302" class="mail-link" style="text-decoration: none; color: var(--text-muted);">07 83 04 33 02</a>
+            </div>
+            <div>
+                <p style="color: var(--lavender); font-weight: 600; margin-bottom: 0.3rem;">Email</p>
+                <a href="mailto:lancelot.luc4s@gmail.com" class="mail-link">lancelot.luc4s@gmail.com</a>
+            </div>
+            <div>
+                <p style="color: var(--lavender); font-weight: 600; margin-bottom: 0.3rem;">Localisation</p>
+                <p style="color: var(--text-muted);">Lesquin (59810)</p>
+            </div>
+        </div>
+
+        <a href="mailto:lancelot.luc4s@gmail.com?subject=Contact%20depuis%20mon%20portfolio" class="btn">M'envoyer un email</a>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2026 Lucas Lancelot — Portfolio BUT GIM & Industrie 4.0. Tous droits réservés.</p>
+    </footer>
+
+    <!-- Script de navigation pour la flèche bas-droite -->
+    <script>
+        const sectionsList = ['accueil', 'profil', 'passion', 'competences', 'ingenieur', 'projets', 'experiences', 'contact'];
+
+        function scrollToNextSection() {
+            const scrollPosition = window.scrollY + window.innerHeight / 2;
+            let currentIndex = 0;
+
+            for (let i = 0; i < sectionsList.length; i++) {
+                const element = document.getElementById(sectionsList[i]);
+                if (element && element.offsetTop <= scrollPosition) {
+                    currentIndex = i;
+                }
+            }
+
+            const nextIndex = (currentIndex + 1) % sectionsList.length;
+            const nextElement = document.getElementById(sectionsList[nextIndex]);
+
+            if (nextElement) {
+                nextElement.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+    </script>
+
+    <!-- Effets visuels -->
+    <script>
+        // Barre de progression en haut de page
+        const progressBar = document.createElement('div');
+        progressBar.className = 'scroll-progress';
+        document.body.appendChild(progressBar);
+
+        window.addEventListener('scroll', () => {
+            const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+            const percent = maxScroll > 0 ? (window.scrollY / maxScroll) * 100 : 0;
+            progressBar.style.width = percent + '%';
+        }, { passive: true });
+
+        // Apparition progressive des blocs au défilement
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.12 });
+
+        document.querySelectorAll('section h2, .card, .exp-card, .competence-block, .cv-frame, .img-small')
+            .forEach(el => {
+                el.classList.add('reveal');
+                revealObserver.observe(el);
+            });
+
+        // Mise en évidence du lien du menu correspondant à la section visible
+        const navLinks = document.querySelectorAll('.nav-links a');
+        const sectionObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    navLinks.forEach(link => {
+                        link.classList.toggle('active', link.getAttribute('href') === '#' + entry.target.id);
+                    });
+                }
+            });
+        }, { rootMargin: '-45% 0px -50% 0px' });
+
+        document.querySelectorAll('header.hero, section').forEach(section => {
+            sectionObserver.observe(section);
+        });
+    </script>
+
+</body>
+</html>
